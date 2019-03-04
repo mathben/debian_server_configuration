@@ -1,0 +1,5 @@
+{
+  "use_demo_data": true,
+  "server_http_project_dir": "/tmp/test",
+  "etc_nginx": "/tmp/dir_test"
+}
