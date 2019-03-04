@@ -24,8 +24,12 @@ def main():
     http_dir = nginx_conf.get("server_http_project_dir")
     etc_nginx_dir = nginx_conf.get("etc_nginx")
 
+    etc_nginx_sites_available_dir = os.path.join(etc_nginx_dir, "sites-available")
+    etc_nginx_sites_enabled_dir = os.path.join(etc_nginx_dir, "sites-enabled")
     if not os.path.exists(etc_nginx_dir):
         os.mkdir(etc_nginx_dir)
+        os.mkdir(etc_nginx_sites_available_dir)
+        os.mkdir(etc_nginx_sites_enabled_dir)
 
     # NGINX template site
     with open(NGINX_TEMPLATE_SITE, encoding='utf-8') as nginx_template_file:
@@ -38,8 +42,11 @@ def main():
 
         site_content = template_nginx_site.replace("$SERVER_NAME", dir_site)
         site_content = site_content.replace("$SERVER_ROOT", os.path.join(http_dir, dir_site))
-        with open(os.path.join(etc_nginx_dir, dir_site), "w", encoding='utf-8') as new_nginx_file:
+        new_sites_available = os.path.join(etc_nginx_sites_available_dir, dir_site)
+        new_sites_enabled = os.path.join(etc_nginx_sites_enabled_dir, dir_site)
+        with open(new_sites_available, "w", encoding='utf-8') as new_nginx_file:
             new_nginx_file.write(site_content)
+        os.symlink(new_sites_available, new_sites_enabled)
 
 
 if __name__ == '__main__':
