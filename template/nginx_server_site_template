@@ -5,7 +5,7 @@ server {
     server_name $SERVER_NAME;
 
     root $SERVER_ROOT;
-    index index.html
+    index index.html;
 
     location / {
         try_files $uri $uri/ =404;
