@@ -44,8 +44,12 @@ def main():
         site_content = site_content.replace("$SERVER_ROOT", os.path.join(http_dir, dir_site))
         new_sites_available = os.path.join(etc_nginx_sites_available_dir, dir_site)
         new_sites_enabled = os.path.join(etc_nginx_sites_enabled_dir, dir_site)
+
+        os.remove(new_sites_available)
         with open(new_sites_available, "w", encoding='utf-8') as new_nginx_file:
             new_nginx_file.write(site_content)
+
+        os.remove(new_sites_enabled)
         os.symlink(new_sites_available, new_sites_enabled)
 
 
